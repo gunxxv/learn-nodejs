@@ -47,6 +47,9 @@ app.get('', (req, res) => {
     res.send('<h1>Weather</h1>')
 })
 
+app.get('*', (req, res) => {
+    res.send('My 404 page')
+})
 app.get('/weather', (req, res) => {
     res.send({
         forecast: 34,
