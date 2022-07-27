@@ -1,16 +1,9 @@
-
 const fs = require('fs')
 const chalk = require('chalk')
-
-const getNotes = () => {
-    return 'Your notes..'
-}
 
 const addNote = (title, body) => {
     const notes = loadNotes()
     const duplicateNote = notes.find((note) => note.title === title)
-
-    debugger
 
     if (!duplicateNote) {
         notes.push({
@@ -18,45 +11,50 @@ const addNote = (title, body) => {
             body: body
         })
         saveNotes(notes)
-        console.log('Note title added!')
+        console.log(chalk.green.inverse('New note added!'))
     } else {
-        console.log('Note title taken!')
+        console.log(chalk.red.inverse('Note title taken!'))
     }
 }
 
-const removeNotes = (title) => {
+const removeNote = (title) => {
     const notes = loadNotes()
-    const duplicateNotes = notes.filter((note) => note.title !== title)
-    if (notes.length > duplicateNotes.length) {
-        saveNotes(duplicateNotes)
+    const notesToKeep = notes.filter((note) => note.title !== title)
+
+    if (notes.length > notesToKeep.length) {
         console.log(chalk.green.inverse('Note removed!'))
+        saveNotes(notesToKeep)
     } else {
-        console.log(chalk.red.inverse("No note found!"))
-    }
+        console.log(chalk.red.inverse('No note found!'))
+    }    
 }
 
 const listNotes = () => {
     const notes = loadNotes()
-    console.log(chalk.blue.inverse("Your Notes"))
+
+    console.log(chalk.inverse('Your notes'))
+
     notes.forEach((note) => {
-        console.log(note.title)  
+        console.log(note.title)
     })
 }
 
-const readNotes= (title) => {
+const readNote = (title) => {
     const notes = loadNotes()
-    const duplicateNote = notes.find((note) => note.title === title)
-    if (duplicateNote) {
-        console.log(chalk.green.bold(duplicateNote.title) + ' ' + duplicateNote.body)
+    const note = notes.find((note) => note.title === title)
+
+    if (note) {
+        console.log(chalk.inverse(note.title))
+        console.log(note.body)
     } else {
-        console.log(chalk.red.inverse('No note found!'))
+        console.log(chalk.red.inverse('Note not found!'))
     }
 }
 
 const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync('notes.json', dataJSON)
-} 
+}
 
 const loadNotes = () => {
     try {
@@ -68,12 +66,9 @@ const loadNotes = () => {
     }
 }
 
-
-
 module.exports = {
-    getNotes: getNotes,
-    addNotes: addNote,
-    removeNotes: removeNotes,
+    addNote: addNote,
+    removeNote: removeNote,
     listNotes: listNotes,
-    readNotes: readNotes
+    readNote: readNote
 }
