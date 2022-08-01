@@ -10,3 +10,7 @@ User.findByIdAndUpdate('62e4bf610a6d35be49b6a33a', { age: 1}).then((user) => {
 }).catch((e) => {
     console.log(e)
 })
+
+const updateAgeAndCount = async (id, age) => {
+    const user = User.findByIdAndUpdate
+}
